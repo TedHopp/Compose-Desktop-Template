@@ -1,26 +1,27 @@
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.jetbrainsCompose
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "1.5.31"
     kotlin("jvm") version kotlinVersion
     kotlin("kapt") version kotlinVersion
-    id("org.jetbrains.compose") version "1.0.0-beta1"
+    id("org.jetbrains.compose") version "1.0.0-rc3"
 }
 
 group = "com.myapp"
 version = "1.0.0"
 
 repositories {
-    jcenter()
+    jcenter() // deprecated, but still needed for com.theapache64:cyclone dependency
     mavenCentral()
     google()
     maven { url = uri("https://jitpack.io") }
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    jetbrainsCompose()
 }
 
-val daggerVersion by extra("2.39.1")
+val daggerVersion by extra("2.40.1")
 
 dependencies {
     implementation(compose.desktop.currentOs)
@@ -36,7 +37,7 @@ dependencies {
     implementation("com.theapache64:cyclone:1.0.0-alpha01")
 
     // Decompose : Decompose
-    val decomposeVersion = "0.2.5"
+    val decomposeVersion = "0.4.0"
     implementation("com.arkivanov.decompose:decompose-jvm:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains-jvm:$decomposeVersion")
 
@@ -44,7 +45,7 @@ dependencies {
     /**
      * Testing Dependencies
      */
-    testImplementation("org.mockito:mockito-inline:3.7.7")
+    testImplementation("org.mockito:mockito-inline:4.0.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // DaggerMock
@@ -52,7 +53,7 @@ dependencies {
     testImplementation("com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5")
 
     // Mockito Core : Mockito mock objects library core API and implementation
-    testImplementation("org.mockito:mockito-core:3.7.7")
+    testImplementation("org.mockito:mockito-core:4.0.0")
 
     // Expekt : An assertion library for Kotlin
     testImplementation("com.github.theapache64:expekt:1.0.0")
@@ -60,14 +61,14 @@ dependencies {
     // JUnit
 
     // Kotlinx Coroutines Test : Coroutines support libraries for Kotlin
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2-native-mt")
     testImplementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
 
     // JUnit : JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
     testImplementation(kotlin("test-junit5"))
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }
 
